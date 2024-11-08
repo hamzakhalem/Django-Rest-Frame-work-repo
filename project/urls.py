@@ -21,4 +21,5 @@ from tickets import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('django/jsonresponsenomodel/', views.no_rest_no_model),
+    path('django/jsonresponsefrommodel/', views.no_rest_from_model),
 ]
