@@ -39,7 +39,7 @@ def FBV_List(request):
         return Response(serializer.data)
     # POST
     elif request.method == 'POST':
-        serializer = GuestSerializer(data= request.data)
+        serializer = GuestSerializer(data = request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status= status.HTTP_201_CREATED)
