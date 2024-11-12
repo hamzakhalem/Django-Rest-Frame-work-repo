@@ -5,7 +5,7 @@ from .models import Guest, Movie, Reservation
 from rest_framework.decorators import api_view
 from .serializers import GuestSerializer, MovieSerializer, ReservationSerializer
 from rest_framework import status, filters
-
+from rest_framework.views import APIView
 # Create your views here.
 #1 without REST and no model query FBV
 def no_rest_no_model(request):
@@ -67,3 +67,23 @@ def FBV_pk(request, pk):
     if request.method == 'DELETE':
         guest.delete()
         return Response(status= status.HTTP_204_NO_CONTENT)
+    
+class CBV_List(APIView):
+    def get(self, request):
+        guests = Guest.objects.all()
+        serializer = GuestSerializer(guests, many = True)
+        return Response(serializer.data)
+    def post(self, request):
+        serializer = GuestSerializer(data= request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(
+                serializer.data,
+                status = status.HTTP_201_CREATED
+            )
+        return Response(
+            serializer.data,
+            status= status.HTTP_400_BAD_REQUEST
+        )
+
+    
