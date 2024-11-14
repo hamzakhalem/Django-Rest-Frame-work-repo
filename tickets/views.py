@@ -5,8 +5,10 @@ from rest_framework.response import Response
 from .models import Guest, Movie, Reservation
 from rest_framework.decorators import api_view
 from .serializers import GuestSerializer, MovieSerializer, ReservationSerializer
-from rest_framework import status, filters
+from rest_framework import status, filters, generics, mixins, viewsets
 from rest_framework.views import APIView
+
+
 # Create your views here.
 #1 without REST and no model query FBV
 def no_rest_no_model(request):
@@ -110,4 +112,21 @@ class  CBV_pk(APIView):
         guest.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
-    
+class mixins_list(mixins.ListModelMixin,mixins.CreateModelMixin,generics.GenericAPIView):
+    queryset = Guest.objects.all()
+    serializer_class = GuestSerializer
+
+    def get(self, request):
+        return self.list(request)
+    def post(self, request):
+        return self.create(request)
+ 
+class mixins_pk(mixins.RetrieveModelMixin, mixins.UpdateModelMixin, mixins.DestroyModelMixin, generics.GenericAPIView):
+    queryset = Guest.objects.all()
+    serializer_class = GuestSerializer
+    def get(self, request, pk):
+        return self.retrieve(request)
+    def put(self, request, pk):
+        return self.update(request)
+    def delete(self, request, pk):
+        return self.destroy(request)
