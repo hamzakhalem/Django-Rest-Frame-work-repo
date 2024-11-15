@@ -138,3 +138,18 @@ class generics_list(generics.ListCreateAPIView):
 class generics_pk(generics.RetrieveUpdateDestroyAPIView):
     queryset = Guest.objects.all()
     serializer_class = GuestSerializer
+
+
+class viewsets_guest(viewsets.ModelViewSet):
+    queryset = Guest.objects.all()
+    serializer_class = GuestSerializer
+
+class viewsets_movie(viewsets.ModelViewSet):
+    queryset = Movie.objects.all()
+    serializer_class = MovieSerializer
+    filter_backend = [filters.SearchFilter]
+    search_fields = ['movie']
+
+class viewsets_reservation(viewsets.ModelViewSet):
+    queryset = Reservation.objects.all()
+    serializer_class = Reservation
