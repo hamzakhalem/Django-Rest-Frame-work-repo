@@ -37,4 +37,8 @@ urlpatterns = [
     path('rest/generics/', views.generics_list.as_view()),
     path('rest/generics/<int:pk>', views.generics_pk.as_view()),
     path('rest/viewsets/', include(router.urls)),
+    path('fbv/findmovie', views.find_movie),
+    path('fbv/newreservation',views.new_reservation),
+    path('api-auth', include('rest_framework.urls')),
+
 ]
