@@ -9,6 +9,9 @@ from rest_framework import status, filters, generics, mixins, viewsets
 from rest_framework.views import APIView
 
 
+from rest_framework.authentication import BasicAuthentication, TokenAuthentication
+from rest_framework.permissions import IsAuthenticated
+
 # Create your views here.
 #1 without REST and no model query FBV
 def no_rest_no_model(request):
@@ -134,11 +137,15 @@ class mixins_pk(mixins.RetrieveModelMixin, mixins.UpdateModelMixin, mixins.Destr
 class generics_list(generics.ListCreateAPIView):
     queryset = Guest.objects.all()
     serializer_class = GuestSerializer
+    authentication_classes = [BasicAuthentication]
+    permission_classes = [IsAuthenticated]
+    
 
 class generics_pk(generics.RetrieveUpdateDestroyAPIView):
     queryset = Guest.objects.all()
     serializer_class = GuestSerializer
-
+    authentication_classes = [BasicAuthentication]
+    permission_classes = [IsAuthenticated]
 
 class viewsets_guest(viewsets.ModelViewSet):
     queryset = Guest.objects.all()
