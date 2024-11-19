@@ -33,7 +33,7 @@ class Post(models.Model):
 
 
 
-# @receiver(post_save, sender=settings.AUTH_USER_MODEL)
-# def TokenCreate(sender, instance, created, **kwargs):
-#     if created:
-#         Token.objects.create(user=instance)
+@receiver(post_save, sender=settings.AUTH_USER_MODEL)
+def TokenCreate(sender, instance, created, **kwargs):
+    if created:
+        Token.objects.create(user=instance) 
