@@ -2,15 +2,17 @@ from django.http import Http404
 from django.shortcuts import render
 from django.http.response import JsonResponse
 from rest_framework.response import Response
-from .models import Guest, Movie, Reservation
+from .models import Guest, Movie, Reservation, Post
 from rest_framework.decorators import api_view
-from .serializers import GuestSerializer, MovieSerializer, ReservationSerializer
+from .serializers import GuestSerializer, MovieSerializer, ReservationSerializer, PostSerializer
 from rest_framework import status, filters, generics, mixins, viewsets
 from rest_framework.views import APIView
 
 
 from rest_framework.authentication import BasicAuthentication, TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
+
+from .permissions import IsAuthorOrReadOnly
 
 # Create your views here.
 #1 without REST and no model query FBV
@@ -161,7 +163,7 @@ class viewsets_movie(viewsets.ModelViewSet):
 
 class viewsets_reservation(viewsets.ModelViewSet):
     queryset = Reservation.objects.all()
-    serializer_class = Reservation
+    serializer_class = ReservationSerializer
 
 @api_view(['GET'])
 def find_movie(request):
@@ -191,3 +193,7 @@ def new_reservation(request):
 
     return Response(status=status.HTTP_201_CREATED)
 
+class Post_pk(generics.RetrieveUpdateDestroyAPIView):
+    permission_classes = [IsAuthorOrReadOnly]
+    queryset = Post.objects.all()
+    serializer_class = PostSerializer
